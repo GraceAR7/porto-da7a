@@ -4,6 +4,11 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -36,6 +41,14 @@ body {
 }
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.project-card {
+  transition: translate 200ms ease;
+}
+
+.project-card:hover {
+  translate: 0 -6px;
 }
 
 input[type="range"].yt-range {

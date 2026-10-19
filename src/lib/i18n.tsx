@@ -37,7 +37,7 @@ const en = {
       },
       {
         title: "Who's “Da7A”?",
-        body: "I'm **Grace**, an independent developer and creative designer. I love turning ideas into **functional digital experiences** through code, design, and experimentation, one project at a time.",
+        body: "I'm **Grace Aviolyn Rifwansyah**, an independent developer and creative designer. I love turning ideas into **functional digital experiences** through code, design, and experimentation, one project at a time.",
       },
       {
         title: "Why “Da7A”?",

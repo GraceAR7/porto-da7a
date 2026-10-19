@@ -82,7 +82,7 @@ export default function Projects() {
 
       <div className="relative bg-cream pb-5 pt-3">
         {/* Tab kategori */}
-        <Reveal className="mx-auto grid max-w-5xl grid-cols-2 gap-2 px-4 sm:grid-cols-4 sm:px-8">
+        <Reveal className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-2 gap-y-2 px-4 sm:px-8">
           {CATEGORIES.map((c) => (
             <button
               key={c}
@@ -102,7 +102,7 @@ export default function Projects() {
         <Reveal delay={100} className="relative mx-auto mt-4 max-w-[1280px]">
           <div
             ref={scroller}
-            className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-3 pr-4 pt-1 sm:px-8 sm:pr-14"
+            className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-5 pr-4 pt-3 sm:px-8 sm:pr-14"
           >
             {list.map((p) => (
               <article
@@ -118,7 +118,7 @@ export default function Projects() {
                     setSelected(p);
                   }
                 }}
-                className="flex w-[min(220px,72vw)] shrink-0 cursor-pointer snap-start flex-col bg-white p-2.5 text-left shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_22px_rgba(0,0,0,0.25)] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-black"
+                className="project-card flex w-[min(220px,72vw)] shrink-0 cursor-pointer snap-start flex-col bg-white p-2.5 text-left shadow-card focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-black"
               >
                 <div className="flex aspect-[247/105] items-center justify-center overflow-hidden bg-[#d6d6d6] text-[#7a7a7a]">
                   {p.images[0] ? (

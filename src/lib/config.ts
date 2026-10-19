@@ -7,7 +7,7 @@ export const SITE = {
   // ID video YouTube (bagian setelah "v=" pada URL). Bisa juga lewat .env.local
   youtubeId: process.env.NEXT_PUBLIC_YOUTUBE_ID ?? "",
   socials: {
-    youtube: "https://www.youtube.com/",
+    youtube: "https://www.youtube.com/@Da7A-o3k8r",
     itch: "https://da7a.itch.io",
     linkedin: "https://www.linkedin.com/in/grace-aviolyn-rifwansyah-8a6a2342a/?isSelfProfile=true",
   },
