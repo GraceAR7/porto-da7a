@@ -102,7 +102,7 @@ export default function Projects() {
         <Reveal delay={100} className="relative mx-auto mt-4 max-w-[1280px]">
           <div
             ref={scroller}
-            className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-3 pr-12 pt-1 sm:px-8 sm:pr-14"
+            className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-3 pr-4 pt-1 sm:px-8 sm:pr-14"
           >
             {list.map((p) => (
               <article
@@ -154,7 +154,7 @@ export default function Projects() {
             type="button"
             onClick={next}
             aria-label={t.projects.next}
-            className="absolute right-0 top-1/2 flex h-40 w-8 -translate-y-1/2 items-center justify-center bg-black text-white transition-colors hover:bg-charcoal sm:w-9"
+            className="absolute right-0 top-1/2 hidden h-40 w-8 -translate-y-1/2 items-center justify-center bg-black text-white transition-colors hover:bg-charcoal sm:flex sm:w-9"
           >
             <TriangleRight className="h-3.5 w-3.5" />
           </button>
