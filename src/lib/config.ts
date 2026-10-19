@@ -8,7 +8,7 @@ export const SITE = {
   youtubeId: process.env.NEXT_PUBLIC_YOUTUBE_ID ?? "",
   socials: {
     youtube: "https://www.youtube.com/",
-    itch: "https://itch.io/",
-    linkedin: "https://www.linkedin.com/",
+    itch: "https://da7a.itch.io",
+    linkedin: "https://www.linkedin.com/in/grace-aviolyn-rifwansyah-8a6a2342a/?isSelfProfile=true",
   },
 };
