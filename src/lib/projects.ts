@@ -1,5 +1,36 @@
 export type Category = "websites" | "desktop" | "games" | "mobile";
-export type Tech = "react" | "html" | "css" | "js" | "ts" | "next" | "tailwind" | "supabase" | "node";
+export type Tech =
+  | "react"
+  | "html"
+  | "css"
+  | "js"
+  | "ts"
+  | "next"
+  | "tailwind"
+  | "supabase"
+  | "node"
+  | "godot"
+  | "unity"
+  | "unreal"
+  | "gamemaker"
+  | "construct3"
+  | "python"
+  | "java"
+  | "csharp"
+  | "cpp"
+  | "c"
+  | "go"
+  | "rust"
+  | "php"
+  | "ruby"
+  | "swift"
+  | "kotlin"
+  | "lua"
+  | "dart"
+  | "gdscript"
+  | "sql"
+  | "bash"
+  | "r";
 
 export const techLabels: Record<Tech, string> = {
   react: "React",
@@ -11,6 +42,28 @@ export const techLabels: Record<Tech, string> = {
   tailwind: "Tailwind CSS",
   supabase: "Supabase",
   node: "Node.js",
+  godot: "Godot",
+  unity: "Unity",
+  unreal: "Unreal Engine",
+  gamemaker: "GameMaker",
+  construct3: "Construct 3",
+  python: "Python",
+  java: "Java",
+  csharp: "C#",
+  cpp: "C++",
+  c: "C",
+  go: "Go",
+  rust: "Rust",
+  php: "PHP",
+  ruby: "Ruby",
+  swift: "Swift",
+  kotlin: "Kotlin",
+  lua: "Lua",
+  dart: "Dart",
+  gdscript: "GDScript",
+  sql: "SQL",
+  bash: "Bash",
+  r: "R",
 };
 
 interface Bi<T = string> {

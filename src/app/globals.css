@@ -51,6 +51,20 @@ body {
   translate: 0 -6px;
 }
 
+@keyframes coming-soon-lock {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(5deg);
+  }
+}
+
+.coming-soon-lock {
+  animation: coming-soon-lock 2s ease-in-out infinite;
+}
+
 @keyframes admin-sheet-up {
   from {
     transform: translateY(100%);
@@ -69,6 +83,9 @@ input[type="range"].yt-range {
     scroll-behavior: auto;
   }
   .marquee-track {
+    animation: none;
+  }
+  .coming-soon-lock {
     animation: none;
   }
 }

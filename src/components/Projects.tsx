@@ -123,50 +123,94 @@ export default function Projects() {
             ref={scroller}
             className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-5 pr-4 pt-3 sm:px-8 sm:pr-14"
           >
-            {list.map((p) => (
-              <article
-                key={p.id}
-                data-card
-                role="button"
-                tabIndex={0}
-                aria-label={`${t.projects.detail.open}: ${p.name}`}
-                onClick={() => setSelected(p)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setSelected(p);
-                  }
-                }}
-                className="project-card flex w-[min(220px,72vw)] shrink-0 cursor-pointer snap-start flex-col bg-white p-2.5 text-left shadow-card focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-black"
-              >
-                <div className="flex aspect-[247/105] items-center justify-center overflow-hidden bg-[#d6d6d6] text-[#7a7a7a]">
-                  {p.images[0] ? (
-                    <img src={p.images[0]} alt="" loading="lazy" className="h-full w-full object-cover" />
-                  ) : (
-                    <ImageIcon className="h-10 w-10" />
-                  )}
+            {list.length === 0 ? (
+              <div data-card className="flex min-h-[280px] w-full shrink-0 items-center justify-center px-4 py-8">
+                <div className="w-full max-w-md bg-white p-6 shadow-card sm:p-8">
+                  <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">
+                    {lang === "id" ? "Kesalahan 404 / Arsip kosong" : "Error 404 / Empty archive"}
+                  </p>
+                  <h3 className="mt-2 font-sans text-6xl font-black leading-none sm:text-7xl">404</h3>
+                  <div className="my-4 h-1 w-12 bg-sun" />
+                  <p className="font-mono text-sm font-bold sm:text-base">
+                    {lang === "id"
+                      ? "Yah, belum ada proyek di bagian ini :/"
+                      : "Oops, there are no projects in this section yet :/"}
+                  </p>
+                  <p className="mt-3 font-mono text-[10px] text-neutral-500">
+                    {lang === "id" ? "STATUS: BELUM DITEMUKAN" : "STATUS: NOTHING FOUND"}
+                  </p>
                 </div>
-                <h3 className="mt-2 font-sans text-sm font-bold">{p.name}</h3>
-                <p className="mt-0.5 min-h-[2.2rem] font-mono text-[10px] leading-snug text-neutral-700">
-                  {p.desc[lang]}
-                </p>
-                <div className="mt-3 flex items-end justify-between">
-                  <div>
-                    <p className="font-mono text-[9px] text-neutral-600">{t.projects.lastUpdated}</p>
-                    <span className="mt-0.5 inline-block bg-black px-1.5 py-0.5 font-mono text-[9px] font-bold text-white">
-                      {fmtDate(p.updated)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-neutral-700">
-                    {p.tech.slice(0, 3).map((k) => (
-                      <Tip key={k} label={techLabels[k]}>
-                        <TechIcon tech={k} className="h-[18px] w-[18px]" />
-                      </Tip>
-                    ))}
-                  </div>
-                </div>
-              </article>
-            ))}
+              </div>
+            ) : (
+              <>
+                {list.map((p) => (
+                  <article
+                    key={p.id}
+                    data-card
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${t.projects.detail.open}: ${p.name}`}
+                    onClick={() => setSelected(p)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelected(p);
+                      }
+                    }}
+                    className="project-card flex w-[min(220px,72vw)] shrink-0 cursor-pointer snap-start flex-col bg-white p-2.5 text-left shadow-card focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-black"
+                  >
+                    <div className="flex aspect-video items-center justify-center overflow-hidden bg-[#d6d6d6] text-[#7a7a7a]">
+                      {p.images[0] ? (
+                        <img src={p.images[0]} alt="" loading="lazy" className="h-full w-full object-contain" />
+                      ) : (
+                        <ImageIcon className="h-10 w-10" />
+                      )}
+                    </div>
+                    <h3 className="mt-2 font-sans text-sm font-bold">{p.name}</h3>
+                    <p className="mt-0.5 min-h-[2.2rem] font-mono text-[10px] leading-snug text-neutral-700">
+                      {p.desc[lang]}
+                    </p>
+                    <div className="mt-3 flex items-end justify-between">
+                      <div>
+                        <p className="font-mono text-[9px] text-neutral-600">{t.projects.lastUpdated}</p>
+                        <span className="mt-0.5 inline-block bg-black px-1.5 py-0.5 font-mono text-[9px] font-bold text-white">
+                          {fmtDate(p.updated)}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-neutral-700">
+                        {p.tech.slice(0, 3).map((k) => (
+                          <Tip key={k} label={techLabels[k]}>
+                            <TechIcon tech={k} className="h-[18px] w-[18px]" />
+                          </Tip>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+                <article
+                  data-card
+                  aria-label="More projects coming soon"
+                  className="flex min-h-[220px] w-[min(220px,72vw)] shrink-0 snap-start flex-col items-center justify-center gap-4 bg-sun p-5 text-center shadow-card"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    className="coming-soon-lock h-12 w-12"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.8"
+                  >
+                    <rect x="4" y="10" width="16" height="11" rx="2" />
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                    <circle cx="12" cy="15" r="1" fill="currentColor" />
+                    <path d="M12 16v2" />
+                  </svg>
+                  <p className="font-mono text-sm font-bold">More projects coming soon</p>
+                </article>
+              </>
+            )}
           </div>
 
           <button
