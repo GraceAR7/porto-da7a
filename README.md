@@ -14,10 +14,22 @@ npm run build && npm start   # produksi
 ## Supabase (tombol Like)
 
 1. Buat project di supabase.com.
-2. Buka **SQL Editor**, jalankan isi `supabase.sql` (tabel `likes`: `id`, `created_at`, RLS, dan Realtime).
+2. Buka **SQL Editor**, jalankan isi `supabase.sql` (tabel `likes`, proyek, admin, RLS, dan Realtime).
 3. Salin **Project URL** dan **anon key** ke `.env.local`.
+4. Buat atau undang akun admin di **Authentication > Users**.
+5. Jalankan query berikut di SQL Editor dengan email akun tersebut:
+
+	```sql
+	insert into public.project_admins (user_id)
+	select id from auth.users where email = 'EMAIL_ADMIN_ANDA'
+	on conflict (user_id) do nothing;
+	```
+
+6. Buka `/admin` di situs dan masuk menggunakan email/password akun tersebut. Halaman ini tidak ditautkan dari main page; RLS membatasi operasi tulis hanya untuk akun di `project_admins`.
 
 Jumlah like = jumlah baris di tabel `likes`. Setiap klik menambah satu baris, dan counter diperbarui live (Realtime + polling cadangan 20 detik). Tanpa env Supabase, tombol tetap berfungsi secara lokal.
+
+Proyek publik dibaca dari tabel `projects`. Foto showcase yang diunggah dari `/admin` disimpan inline sebagai data URL pada array `projects.images` (maksimal 1 MB per foto dan 5 MB total per proyek). URL publik atau path file di folder `public/` juga tetap didukung. Kolaborator bersifat opsional dan dapat berisi beberapa nama.
 
 ## Konten yang perlu diganti
 

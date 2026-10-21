@@ -31,6 +31,47 @@ export interface Project {
   tech: Tech[];
   images: string[]; // gambar showcase di popup, contoh ["/images/projects/cashflow-1.jpg"]
   links?: { live?: string; repo?: string };
+  collabWith?: string[];
+}
+
+export interface ProjectRecord {
+  id: string;
+  category: Category;
+  name: string;
+  desc_en: string;
+  desc_id: string;
+  long_desc_en: string;
+  long_desc_id: string;
+  highlights_en: string[];
+  highlights_id: string[];
+  status_en: string;
+  status_id: string;
+  created_date: string;
+  updated_date: string;
+  tech: Tech[];
+  images: string[];
+  live_url: string | null;
+  repo_url: string | null;
+  collab_with: string[];
+  sort_order: number;
+}
+
+export function fromProjectRecord(record: ProjectRecord): Project {
+  return {
+    id: record.id,
+    category: record.category,
+    name: record.name,
+    desc: { en: record.desc_en, id: record.desc_id },
+    longDesc: { en: record.long_desc_en, id: record.long_desc_id },
+    highlights: { en: record.highlights_en, id: record.highlights_id },
+    status: { en: record.status_en, id: record.status_id },
+    created: record.created_date,
+    updated: record.updated_date,
+    tech: record.tech,
+    images: record.images,
+    links: { live: record.live_url ?? undefined, repo: record.repo_url ?? undefined },
+    collabWith: record.collab_with,
+  };
 }
 
 const desc: Bi = {

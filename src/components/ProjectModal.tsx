@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate, stagger } from "animejs";
 import { useI18n } from "@/lib/i18n";
 import { Project, techLabels } from "@/lib/projects";
-import { CloseIcon, ImageIcon, TriangleLeft, TriangleRight } from "./Icons";
+import { CloseIcon, FullscreenIcon, ImageIcon, TriangleLeft, TriangleRight } from "./Icons";
 import TechIcon from "./TechIcon";
 
 export default function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
@@ -12,7 +12,13 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
   const d = t.projects.detail;
   const panel = useRef<HTMLDivElement>(null);
   const closing = useRef(false);
+  const previewTrigger = useRef<HTMLButtonElement>(null);
+  const previewCloseButton = useRef<HTMLButtonElement>(null);
   const [idx, setIdx] = useState(0);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const previewOpenRef = useRef(previewOpen);
+  const wasPreviewOpen = useRef(false);
+  previewOpenRef.current = previewOpen;
 
   const fmtDate = (iso: string) =>
     new Intl.DateTimeFormat(lang === "id" ? "id-ID" : "en-GB", { day: "numeric", month: "long", year: "numeric" }).format(
@@ -45,7 +51,10 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
       }),
     ];
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+      if (e.key === "Escape") {
+        if (previewOpenRef.current) setPreviewOpen(false);
+        else close();
+      }
       if (e.key === "ArrowRight") setIdx((i) => (i + 1) % slots.length);
       if (e.key === "ArrowLeft") setIdx((i) => (i - 1 + slots.length) % slots.length);
     };
@@ -57,6 +66,12 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (previewOpen) previewCloseButton.current?.focus();
+    else if (wasPreviewOpen.current) previewTrigger.current?.focus();
+    wasPreviewOpen.current = previewOpen;
+  }, [previewOpen]);
 
   const meta: [string, string][] = [
     [d.created, fmtDate(project.created)],
@@ -98,7 +113,18 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
             <p className="mb-2 font-mono text-[11px] font-bold uppercase">{d.gallery}</p>
             <div className="relative aspect-video overflow-hidden bg-[#d6d6d6]">
               {slots[idx] ? (
-                <img src={slots[idx] as string} alt={`${project.name} ${idx + 1}`} className="h-full w-full object-cover" />
+                <>
+                  <img src={slots[idx] as string} alt={`${project.name} ${idx + 1}`} className="h-full w-full object-cover" />
+                  <button
+                    ref={previewTrigger}
+                    type="button"
+                    onClick={() => setPreviewOpen(true)}
+                    aria-label={d.fullscreen}
+                    className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center bg-white shadow-card transition-transform hover:scale-105"
+                  >
+                    <FullscreenIcon className="h-5 w-5" />
+                  </button>
+                </>
               ) : (
                 <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-[#7a7a7a]">
                   <ImageIcon className="h-16 w-16" />
@@ -186,6 +212,17 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
               </ul>
             </section>
 
+            {!!project.collabWith?.length && (
+              <section data-pop style={{ opacity: 0 }}>
+                <h4 className="inline-block bg-sky px-2 py-0.5 font-sans text-sm font-bold text-black">Collab with:</h4>
+                <ul className="mt-3 flex flex-wrap gap-2 font-mono text-xs text-neutral-800">
+                  {project.collabWith.map((name) => (
+                    <li key={name} className="bg-white px-2.5 py-1.5 shadow-card">{name}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
             <dl data-pop style={{ opacity: 0 }} className="grid grid-cols-2 gap-px bg-black/15">
               {meta.map(([k, v]) => (
                 <div key={k} className="bg-cream p-3">
@@ -222,6 +259,52 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
           </div>
         </div>
       </div>
+      {previewOpen && slots[idx] && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${project.name} ${idx + 1}`}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setPreviewOpen(false);
+          }}
+          className="fixed inset-0 z-[90] flex items-center justify-center bg-black/95 p-4 sm:p-8"
+        >
+          <button
+            ref={previewCloseButton}
+            type="button"
+            onClick={() => setPreviewOpen(false)}
+            aria-label={d.close}
+            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center bg-sun text-black transition-transform hover:rotate-90 sm:right-8 sm:top-8"
+          >
+            <CloseIcon className="h-5 w-5" />
+          </button>
+          <img
+            src={slots[idx] as string}
+            alt={`${project.name} ${idx + 1}`}
+            className="max-h-full max-w-full object-contain"
+          />
+          {slots.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={() => setIdx((i) => (i - 1 + slots.length) % slots.length)}
+                aria-label={d.prev}
+                className="absolute left-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center bg-white shadow-card sm:left-8"
+              >
+                <TriangleLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setIdx((i) => (i + 1) % slots.length)}
+                aria-label={d.next}
+                className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center bg-white shadow-card sm:right-8"
+              >
+                <TriangleRight className="h-5 w-5" />
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

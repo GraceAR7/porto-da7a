@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, stagger } from "animejs";
 import { useI18n } from "@/lib/i18n";
-import { Category, Project, marqueeItems, projects, techLabels } from "@/lib/projects";
+import { Category, Project, ProjectRecord, fromProjectRecord, marqueeItems, projects, techLabels } from "@/lib/projects";
+import { supabase } from "@/lib/supabase";
 import Reveal from "./Reveal";
 import Tip from "./Tip";
 import TechIcon from "./TechIcon";
@@ -16,16 +17,34 @@ export default function Projects() {
   const { t, lang } = useI18n();
   const [cat, setCat] = useState<Category>("websites");
   const [selected, setSelected] = useState<Project | null>(null);
+  const [projectList, setProjectList] = useState<Project[]>(projects);
   const scroller = useRef<HTMLDivElement>(null);
   const first = useRef(true);
 
-  const list = projects.filter((p) => p.category === cat);
+  const list = projectList.filter((p) => p.category === cat);
   const fmtDate = (iso: string) =>
     new Intl.DateTimeFormat(lang === "id" ? "id-ID" : "en-GB", { day: "numeric", month: "long", year: "numeric" }).format(
       new Date(iso)
     );
 
   // animasi kartu saat ganti tab
+  useEffect(() => {
+    if (!supabase) return;
+    let active = true;
+
+    supabase
+      .from("projects")
+      .select("*")
+      .order("sort_order", { ascending: true })
+      .then(({ data, error }) => {
+        if (active && !error && data) setProjectList((data as ProjectRecord[]).map(fromProjectRecord));
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   useEffect(() => {
     if (first.current) {
       first.current = false;
